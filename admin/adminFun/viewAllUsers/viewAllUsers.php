@@ -19,6 +19,7 @@ include 'C:/xampp/htdocs/dms/partials/_dbconnect.php';
     include 'C:/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
     ?>
     <div class="card-body container mt-5 mb-5 pt-2 pb-2 pl-5 pr-5">
+        <h2 class="text-center text-secondary">--View All Users--</h2>
         <table id="myTable" class="table table-striped table-bordered ">
         <thead >
             <tr >
@@ -53,6 +54,10 @@ include 'C:/xampp/htdocs/dms/partials/_dbconnect.php';
     </div>
     
 
+    <!-- FOOTER IMPORTED -->
+    <?php
+    require '/xampp/htdocs/dms/partials/_footer.php';
+    ?>
 
 
     <!-- simple bootstrap js -->

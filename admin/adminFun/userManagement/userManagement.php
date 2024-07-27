@@ -181,6 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- DATATABLE -->
     <div class="card-body container mt-5 mb-2 pt-2 pb-2 pl-5 pr-5">
+        <h2 class="text-center text-secondary">--User Management--</h2>
         <table id="myTable" class="table table-striped table-bordered ">
             <thead>
                 <tr>
@@ -259,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 console.log("edit ");
                 sno = e.target.id;
 
-                if (confirm("Are you sure you want to delete this note!")) {
+                if (confirm("Are you sure you want to delete this USER!")) {
                     console.log("yes");
                     window.location = `/dms/admin/adminFun/userManagement/userManagement.php?delete=${sno}`;
                 } else {

@@ -17,7 +17,7 @@
 
     <?php
     //HEADER IMPORTED
-    include 'C:/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
+    include '/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
     //DISSMISABLE ALERT FOR SUCCESS LOGIN
     if (!$_SESSION['alert_shown']) {
         echo '<div class="alert alert-success alert-dismissible fade show alert-top mb-0" role="alert"><strong>Success! </strong>
@@ -26,35 +26,55 @@
     }
     ?>
     <!-- STAICTICAL DATA -->
+    <?php
+        include '/xampp/htdocs/dms/partials/_dbconnect.php';
+        //FOR TOATAL USERS
+        $query1 = "select count(*) as totalU from `users`";
+        $result1 = mysqli_query($conn, $query1);
+        $array1 = mysqli_fetch_assoc($result1);
+        //FOR ACTIVE USERS
+        $query2 = "select count(*) as activeU from `users` where status = 'active'";
+        $result2 = mysqli_query($conn, $query2);
+        $array2 = mysqli_fetch_assoc($result2);
+        //FOR OFFICERS
+        $query3 = "select count(*) as officerU from `users` where type = 'officer'";
+        $result3 = mysqli_query($conn, $query3);
+        $array3 = mysqli_fetch_assoc($result3);
+        //FOR EMPLOYEES
+        $query4 = "select count(*) as employeeU from `users` where type = 'employee'";
+        $result4 = mysqli_query($conn, $query4);
+        $array4 = mysqli_fetch_assoc($result4);
+
+    ?>
     <h3 class="text-center text-secondary mb-0 mt-5">DocStream Statistics</h3>
     <section id="content">
         <main>
-            <ul class="box-info">
-                <li class="list1">
+            <ul class="box-info px-2">
+                <li class="list1 shadow">
                     <i class='bx bxs-hot'></i>
                     <span class="text">
-                        <h3>1020</h3>
+                        <h3><?php echo $array1['totalU']; ?></h3>
                         <p>Total Users</p>
                     </span>
                 </li>
-                <li class="list1">
+                <li class="list1 shadow">
                     <i class='bx bxs-group'></i>
                     <span class="text">
-                        <h3>2834</h3>
+                        <h3><?php echo $array2['activeU']; ?></h3>
                         <p>Active Users</p>
                     </span>
                 </li>
-                <li class="list1">
+                <li class="list1 shadow">
                     <i class='bx bx-user'></i>
                     <span class="text">
-                        <h3>2543</h3>
+                        <h3><?php echo $array3['officerU']; ?></h3>
                         <p>Officers</p>
                     </span>
                 </li>
-                <li class="list1">
+                <li class="list1 shadow">
                     <i class='bx bx-user'></i>
                     <span class="text">
-                        <h3>2543</h3>
+                        <h3><?php echo $array4['employeeU']; ?></h3>
                         <p>Employees</p>
                     </span>
                 </li>
@@ -67,7 +87,7 @@
         <!-- TODO List -->
         
         <div class="container item itemSc shadow">
-        <h3 class="text-center text-secondary mb-0 mt-3 p-2 container non-flex">TODO LIST</h2>
+        <h3 class="text-center text-secondary mb-0 mt-3 pb-0 pt-2 container non-flex">TODO LIST</h2>
             <?php
             include 'C:/xampp/htdocs/dms/admin/adminFun/todoList/todo.php';
             ?>
@@ -115,7 +135,7 @@
 
     <!-- FOOTER IMPORTED -->
     <?php
-    require 'C:/xampp/htdocs/dms/partials/_footer.php';
+    require '/xampp/htdocs/dms/partials/_footer.php';
     ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

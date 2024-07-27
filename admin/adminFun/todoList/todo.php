@@ -100,7 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                     <div class="modal-footer d-block mr-auto">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
@@ -111,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
         <div class="container myTodo">
         
-            <div class="container p-4">
+            <div class="container pt-0 pb-4 px-4">
                 <div>
                     <form action="/dms/admin/admin.php" method="POST">
                         <div class="form-group">
@@ -168,8 +167,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <script>
             $(document).ready(function() {
                 $('#myTable').DataTable({
-                    "lengthMenu": [[3, 10, 15, -1], [3, 10, 15, "All"]],
-                    "pageLength": 3,
+                    "lengthMenu": [[2, 5, 10, -1], [2, 5, 10, "All"]],
+                    "pageLength": 2,
                 });
 
             });
