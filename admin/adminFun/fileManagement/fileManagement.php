@@ -35,31 +35,29 @@ include 'C:/xampp/htdocs/dms/partials/_dbconnect.php';
                     <th class="text-primary">file_path</th>
                     <th class="text-primary">file_type</th>
                     <th class="text-primary">upload_date</th>
-                    <th class="text-primary">upload_date</th>
+                    <th class="text-primary">uploaded_by</th>
                     <th class="text-primary">status</th>
-                    <th class="text-success">Edit</th>
+                    <!-- <th class="text-success">Edit</th>
                     <th class="text-success">Delete</th>
-                    <th class="text-success">Access Controls</th>
+                    <th class="text-success">Access Controls</th> -->
 
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $mySr = 0;
                 $sql = "select * from `documents`";
                 $result = mysqli_query($conn, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $mySr++;
+
                     echo '<tr>
-                            <td>' . $mySr . '</td>
-                            <td>' . $row["username"] . '</td>
-                            <td>' . $row["email"] . '</td>
-                            <td>' . $row["type"] . '</td>
-                            <td>' . $row["date"] . '</td>
+                            <td>' . $row["document_id"] . '</td>
+                            <td>' . $row["title"] . '</td>
+                            <td>' . $row["description"] . '</td>
+                            <td>' . $row["file_path"] . '</td>
+                            <td>' . $row["file_type"] . '</td>
+                            <td>' . $row["upload_date"] . '</td>
+                            <td>' . $row["uploaded_by"] . '</td>
                             <td>' . $row["status"] . '</td>
-                            <td><button class="myEdit btn btn-success mt-1 pb-0 pt-0" id="' . $row["srno"] . '">Edit</button></td>
-                            <td><button class="myDelete btn btn-success mt-1 pb-0 pt-0" id="' . $row["srno"] . '">Delete</button></td>
-                            <td><button class="myAccess btn btn-success mt-1 pb-0 pt-0">Access Controls</button></td>
                         </tr>';
                 }
                 ?>

@@ -13,6 +13,9 @@ function getTreeData($dir) {
             'icon' => is_dir($path) ? 'fa fa-folder' : 'fa fa-file',
             'li_attr' => [
                 'class' => is_dir($path) ? 'folder-node' : 'file-node' // Add class for styling
+            ],
+            'state' => [
+                'selected' => false // Add for checkbox functionality
             ]
         ];
         if (is_dir($path)) {
@@ -23,7 +26,7 @@ function getTreeData($dir) {
     return $result;
 }
 
-$directory = 'C:/xampp/htdocs/dms/filesTemp';
+$directory = '/xampp/htdocs/dms/filesTemp';
 header('Content-Type: application/json');
 echo json_encode(getTreeData($directory));
 ?>
