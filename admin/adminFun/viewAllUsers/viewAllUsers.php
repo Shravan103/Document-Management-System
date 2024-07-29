@@ -16,7 +16,7 @@ include 'C:/xampp/htdocs/dms/partials/_dbconnect.php';
 
 <body>
     <?php
-    include 'C:/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
+    include '/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
     ?>
     <div class="card-body container mt-5 mb-5 pt-2 pb-2 pl-5 pr-5">
         <h2 class="text-center text-secondary">--View All Users--</h2>

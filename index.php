@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     session_start();
                     $_SESSION['alert_shown'] = false;
                     $_SESSION['loggedin'] = true;
+                    $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['email'] = $row['email'];
                     $_SESSION['date'] = $row['date'];

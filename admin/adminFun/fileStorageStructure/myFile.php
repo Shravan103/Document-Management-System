@@ -1,3 +1,4 @@
+<?php session_start() ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,7 +74,7 @@
 </head>
 <body>
   <!--NAVBAR-->
-  <?php include 'C:/xampp/htdocs/dms/admin/adminExtra/_Aheader.php'; ?>
+  <?php include '/xampp/htdocs/dms/admin/adminExtra/_Aheader.php'; ?>
 
   <!--IMPORTED FILE STRUCTURE -->
   <h2 class="card-body container mt-5 mb-2 pt-2 pb-2 pl-5 pr-5 text-center text-secondary">--File Structure--</h2>
@@ -134,7 +135,7 @@
             </div>
             <div class="form-group">
               <label for="uploaded-by">Uploaded By</label>
-              <input type="number" id="uploaded-by" name="uploaded_by" class="form-control">
+              <input type="text" id="uploaded-by" name="uploaded_by" class="form-control" value="<?php echo $_SESSION['srno']; ?>" readonly>
             </div>
             <div class="form-group">
               <label for="file-status">Status</label>
@@ -156,7 +157,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
     $(document).ready(function() {
-      const rootPath = 'C:/xampp/htdocs/dms/filesTemp';
+      const rootPath = '/xampp/htdocs/dms/filesTemp';
 
       $('#file-tree').jstree({
         'core': {

@@ -22,7 +22,7 @@
                             <li><a class="dropdown-item" href="/dms/admin/adminFun/viewAllUsers/viewAllUsers.php">View All Users</a></li>
                             <li><a class="dropdown-item" href="/dms/admin/adminFun/userManagement/userManagement.php">User Management</a></li>
                             <li><a class="dropdown-item" href="/dms/admin/adminFun/fileStorageStructure/myFile.php">File Structure</a></li>
-                            <li><a class="dropdown-item" href="/dms/admin/adminFun/fileManagement/fileManagement.php">File Management</a></li>
+                            <li><a class="dropdown-item" href="/dms/admin/adminFun/fileManagement/fileManagement.php">Document Details</a></li>
                             
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/dms/admin/adminFun/aboutMe/aboutMe.php">About-Me</a></li>
