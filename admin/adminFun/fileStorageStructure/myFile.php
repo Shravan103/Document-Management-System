@@ -84,11 +84,19 @@
   </div>
 
   <!--  DELETE, CREATE & UPLOAD BUTTONS-->
-  <div class="text-center mt-4">
+  <div class="text-center mt-5">
     <button id="delete-btn" class="btn btn-danger">Delete Selected</button>
     <button id="create-folder-btn" class="btn btn-primary">Create Folder</button>
     <button id="upload-file-btn" class="btn btn-success">Upload File</button>
   </div>
+
+  <!-- FOOTER IMPORTED -->
+  <div style="margin-top: 110px;">
+    <?php
+      require '/xampp/htdocs/dms/partials/_footer.php';
+    ?>
+  </div>
+  
 
   <!-- MODAL FOR CREATE FOLDER -->
   <div class="modal fade" id="createFolderModal" tabindex="-1" role="dialog" aria-labelledby="createFolderModalLabel" aria-hidden="true">

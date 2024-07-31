@@ -29,7 +29,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a id="logout" class="nav-link" href="/dms/index.php">Logout</a>
+                        <a id="logout" class="nav-link" href="/dms/logout.php">Logout</a>
                     </li>
                 </ul>
                     <a class="navbar-brand" draggable="true" style="font-size: 27px; color: navy;"><span style="color: rgb(13, 5, 54); font-weight: bold;">Doc</span>Stream</a>

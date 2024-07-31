@@ -1,4 +1,11 @@
-<?php session_start() ?>
+<?php
+    session_start();
+    if(!isset($_SESSION['loggedin']))
+    {
+        header("location: /dms/index.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,7 +100,7 @@
         <div class="container item itemSc shadow">
         <h3 class="text-center text-secondary mb-0 mt-3 pb-0 pt-2 container non-flex">TODO LIST</h2>
             <?php
-            include 'C:/xampp/htdocs/dms/admin/adminFun/todoList/todo.php';
+            include '/xampp/htdocs/dms/admin/adminFun/todoList/todo.php';
             ?>
         </div>
 

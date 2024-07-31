@@ -1,5 +1,5 @@
 <?php
-include 'C:/xampp/htdocs/dms/partials/_dbconnect.php';
+include '/xampp/htdocs/dms/partials/_dbconnect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

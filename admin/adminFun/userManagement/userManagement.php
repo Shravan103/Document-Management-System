@@ -1,6 +1,6 @@
 <?php
 //DATABASE CONNECTION
-include 'C:/xampp/htdocs/dms/partials/_dbconnect.php';
+include '/xampp/htdocs/dms/partials/_dbconnect.php';
 
 //DELETE THE USER
 $update = false;
@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!--NAVBAR-->
     <?php
-    include 'C:/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
+    include '/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
     ?>
 
     <!-- DISSMISABLE ALERT -->
@@ -271,7 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </script>
 
     <?php
-    require 'C:/xampp/htdocs/dms/partials/_footer.php';
+    require '/xampp/htdocs/dms/partials/_footer.php';
     ?>
 </body>
 

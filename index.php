@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $tempUsername;
                     header("location: /DMS/user/user.php");
-                } elseif ($row['type'] == "approver") {
+                } elseif ($row['type'] == "officer") {
                     session_start();
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $tempUsername;
