@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($lpassword, $row['password'])) {
                 if ($row['type'] == "admin") {
                     session_start();
-                    $_SESSION['alert_shown'] = false;
+                    $_SESSION['alert_shown1'] = false;
                     $_SESSION['loggedin'] = true;
                     $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $row['username'];
@@ -48,7 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("location: /DMS/admin/admin.php");
                 } elseif ($row['type'] == "employee") {
                     session_start();
+                    $_SESSION['alert_shown2'] = false;
                     $_SESSION['loggedin'] = true;
+                    $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $tempUsername;
                     header("location: /DMS/user/user.php");
                 } elseif ($row['type'] == "officer") {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2024 at 09:39 AM
+-- Generation Time: Aug 01, 2024 at 09:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,10 +31,17 @@ CREATE TABLE `access_control` (
   `access_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `document_id` int(11) DEFAULT NULL,
-  `access_type` enum('View Only','View and Download','Edit') NOT NULL,
+  `access_type` enum('View Only','View and Download') DEFAULT NULL,
   `access_granted_by` int(11) DEFAULT NULL,
   `granted_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `access_control`
+--
+
+INSERT INTO `access_control` (`access_id`, `user_id`, `document_id`, `access_type`, `access_granted_by`, `granted_date`) VALUES
+(18, 3, 24, 'View and Download', 1, '2024-08-01 19:51:13');
 
 -- --------------------------------------------------------
 
@@ -67,6 +74,14 @@ CREATE TABLE `documents` (
   `status` enum('Active','Archived') DEFAULT 'Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `documents`
+--
+
+INSERT INTO `documents` (`document_id`, `title`, `description`, `file_path`, `file_type`, `upload_date`, `uploaded_by`, `status`) VALUES
+(24, 'TWPE', 'TWPE Excercise', '/xampp/htdocs/dms/filesTemp/TWPE Excercise.pdf', 'pdf', '2024-08-01 16:18:07', 1, 'Active'),
+(25, 'Taigman', 'Deep face learning research paper', '/xampp/htdocs/dms/filesTemp/taigman_cvpr14.pdf', 'pdf', '2024-08-01 16:19:20', 1, 'Active');
+
 -- --------------------------------------------------------
 
 --
@@ -78,8 +93,16 @@ CREATE TABLE `document_approvals` (
   `document_id` int(11) DEFAULT NULL,
   `approved_by` int(11) DEFAULT NULL,
   `approval_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('Approved','Rejected') NOT NULL
+  `status` enum('Pending','Approved','Rejected') NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `document_approvals`
+--
+
+INSERT INTO `document_approvals` (`approval_id`, `document_id`, `approved_by`, `approval_date`, `status`) VALUES
+(20, 24, NULL, '2024-08-01 16:18:07', 'Pending'),
+(21, 25, NULL, '2024-08-01 16:19:20', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -94,6 +117,17 @@ CREATE TABLE `document_versions` (
   `file_path` varchar(255) NOT NULL,
   `upload_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `uploaded_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `starred_documents`
+--
+
+CREATE TABLE `starred_documents` (
+  `user_id` int(11) NOT NULL,
+  `document_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -126,7 +160,10 @@ INSERT INTO `users` (`srno`, `username`, `email`, `type`, `password`, `date`, `s
 (15, 'ramesh Lal', 'rameshLal@gmail.com', 'employee', '$2y$10$G2BWoMKv0..5.1do0tuRKu8cI3lwDsWEyGaNxRumUb5W.A8xUB1d6', '2024-07-24 00:36:09', 'active'),
 (16, 'krupeshjaishankar', 'krupeshj@gmail.com', 'employee', '$2y$10$Gj9/dNwnupOqwPrVjglcFOy5sHoAs6P5kW7x5Mdv4.UNCIVBX6bru', '2024-07-24 00:36:26', 'active'),
 (19, 'carry', 'carry@gmail.com', 'employee', '$2y$10$3KM4he9fSyZdIgHvkZonx.oiW5xJZu.0oQFTkf7kBbJWrBvR.lVa2', '2024-07-24 18:19:15', 'active'),
-(20, 'testuser', 'testuser@gmail.com', 'admin', '$2y$10$wbBTPZevakW8jS321d83f.FCOdLzZunqrcRPV8tIY.f4a9YsKlWjW', '2024-07-24 18:30:47', 'active');
+(20, 'testuser', 'testuser@gmail.com', 'admin', '$2y$10$wbBTPZevakW8jS321d83f.FCOdLzZunqrcRPV8tIY.f4a9YsKlWjW', '2024-07-24 18:30:47', 'active'),
+(21, 'k', 'k@gmail.com', 'employee', '$2y$10$LbO22aKp.PPiPfLu4ldapelaqiZy7PnZ.e6V1SY6rd5lJgtXvKATC', '2024-07-30 17:18:48', 'active'),
+(22, 'd', 'd@gmail.com', 'employee', '$2y$10$BhvcC3czKeyEhXXdX4FuJ.3kLGFjqMpQdzZUAU7zZpl1CcLd4sjCm', '2024-08-01 12:31:46', 'active'),
+(23, 'bhai', 'bhai@gmail.com', 'employee', '$2y$10$hTDt/R/oZfygl4.mUAuLZuce1yowHDfcvEFKeB84WqhUwYxXOCNKy', '2024-08-01 22:41:30', 'active');
 
 --
 -- Indexes for dumped tables
@@ -172,6 +209,13 @@ ALTER TABLE `document_versions`
   ADD KEY `uploaded_by` (`uploaded_by`);
 
 --
+-- Indexes for table `starred_documents`
+--
+ALTER TABLE `starred_documents`
+  ADD PRIMARY KEY (`user_id`,`document_id`),
+  ADD KEY `document_id` (`document_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -185,7 +229,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `access_control`
 --
 ALTER TABLE `access_control`
-  MODIFY `access_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `access_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `audit_logs`
@@ -197,13 +241,13 @@ ALTER TABLE `audit_logs`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `document_approvals`
 --
 ALTER TABLE `document_approvals`
-  MODIFY `approval_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `approval_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `document_versions`
@@ -215,7 +259,7 @@ ALTER TABLE `document_versions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `srno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `srno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
@@ -254,6 +298,13 @@ ALTER TABLE `document_approvals`
 ALTER TABLE `document_versions`
   ADD CONSTRAINT `document_versions_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`document_id`),
   ADD CONSTRAINT `document_versions_ibfk_2` FOREIGN KEY (`uploaded_by`) REFERENCES `users` (`srno`);
+
+--
+-- Constraints for table `starred_documents`
+--
+ALTER TABLE `starred_documents`
+  ADD CONSTRAINT `starred_documents_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`srno`),
+  ADD CONSTRAINT `starred_documents_ibfk_2` FOREIGN KEY (`document_id`) REFERENCES `documents` (`document_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

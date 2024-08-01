@@ -26,3 +26,30 @@ function setActiveLink(activeLinkId) {
         }
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("fileManagement").addEventListener("click", function() {
+        document.getElementById("fileManagementSection").classList.remove("hidden");
+        document.getElementById("StarredSection").classList.add("hidden");
+    });
+    
+    document.getElementById("Starred").addEventListener("click", function() {
+        document.getElementById("fileManagementSection").classList.add("hidden");
+        document.getElementById("StarredSection").classList.remove("hidden");
+    });
+
+    $('#myTable').DataTable();
+    $('#starredTable').DataTable();
+});
+
+
+document.getElementById('fileManagement').addEventListener('click', function() {
+    document.getElementById('fileManagementSection').classList.remove('hidden');
+    document.getElementById('StarredSection').classList.add('hidden');
+});
+
+document.getElementById('Starred').addEventListener('click', function() {
+    document.getElementById('fileManagementSection').classList.add('hidden');
+    document.getElementById('StarredSection').classList.remove('hidden');
+});

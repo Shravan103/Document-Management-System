@@ -40,22 +40,51 @@ function deletePath($path) {
         }
         $deleted = rmdir($path);
         if ($deleted) {
-            $stmt = $conn->prepare("DELETE FROM documents WHERE file_path LIKE ?");
+            // Normalize path for database search
             $searchPath = $path . '%';
+            $stmt = $conn->prepare("SELECT document_id FROM documents WHERE file_path LIKE ?");
             $stmt->bind_param("s", $searchPath);
             $stmt->execute();
+            $result = $stmt->get_result();
+            while ($row = $result->fetch_assoc()) {
+                $document_id = $row['document_id'];
+                deleteDocumentDependencies($document_id);
+            }
         }
         return $deleted;
     } elseif (is_file($path)) {
         $deleted = unlink($path);
         if ($deleted) {
-            $stmt = $conn->prepare("DELETE FROM documents WHERE file_path = ?");
+            $stmt = $conn->prepare("SELECT document_id FROM documents WHERE file_path = ?");
             $stmt->bind_param("s", $path);
             $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows > 0) {
+                $document_id = $result->fetch_assoc()['document_id'];
+                deleteDocumentDependencies($document_id);
+            }
         }
         return $deleted;
     }
     return false;
+}
+
+function deleteDocumentDependencies($document_id) {
+    global $conn;
+    // Delete records from document_approvals
+    $stmt = $conn->prepare("DELETE FROM document_approvals WHERE document_id = ?");
+    $stmt->bind_param("i", $document_id);
+    $stmt->execute();
+    
+    // Delete records from access_control
+    $stmt = $conn->prepare("DELETE FROM access_control WHERE document_id = ?");
+    $stmt->bind_param("i", $document_id);
+    $stmt->execute();
+    
+    // Finally, delete the document record
+    $stmt = $conn->prepare("DELETE FROM documents WHERE document_id = ?");
+    $stmt->bind_param("i", $document_id);
+    $stmt->execute();
 }
 
 function createFolder($path, $folderName) {
@@ -82,8 +111,24 @@ function uploadFile($path) {
             $status = $_POST['status'];
             $uploadDate = date('Y-m-d H:i:s');
 
+            // Insert into documents table
             $stmt = $conn->prepare("INSERT INTO documents (title, description, file_path, file_type, upload_date, uploaded_by, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("sssssis", $title, $description, $destPath, $fileType, $uploadDate, $uploadedBy, $status);
+            $stmt->execute();
+            $document_id = $stmt->insert_id;
+
+            // Insert into access_control table
+            // $accessType = 'View and Download'; // Default access type
+            // $accessEmployee = 21;   //Static assignment, will remove later
+            // $stmt = $conn->prepare("INSERT INTO access_control (user_id, document_id, access_type, access_granted_by) VALUES (?, ?, ?, ?)");
+            // $stmt->bind_param("iisi", $accessEmployee, $document_id, $accessType, $uploadedBy);
+            // $stmt->execute();
+
+            // Insert into document_approvals table
+            $approvalStatus = 'Pending'; // Default approval status
+            $stmt = $conn->prepare("INSERT INTO document_approvals (document_id, approval_date, status) VALUES (?, ?, ?)");
+            $approvalDate = $uploadDate;
+            $stmt->bind_param("iss", $document_id, $approvalDate, $approvalStatus);
             return $stmt->execute();
         }
     }

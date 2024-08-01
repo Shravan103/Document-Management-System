@@ -26,10 +26,10 @@
     //HEADER IMPORTED
     include '/xampp/htdocs/dms/admin/adminExtra/_Aheader.php';
     //DISSMISABLE ALERT FOR SUCCESS LOGIN
-    if (!$_SESSION['alert_shown']) {
+    if (!$_SESSION['alert_shown1']) {
         echo '<div class="alert alert-success alert-dismissible fade show alert-top mb-0" role="alert"><strong>Success! </strong>
             Hey ' . $_SESSION['username'] . ', you are successfully Logged-In.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        $_SESSION['alert_shown'] = true;
+        $_SESSION['alert_shown1'] = true;
     }
     ?>
     <!-- STAICTICAL DATA -->

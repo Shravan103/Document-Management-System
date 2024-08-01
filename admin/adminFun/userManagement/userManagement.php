@@ -193,7 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <th class="text-primary">Status</th>
                     <th class="text-success">Edit</th>
                     <th class="text-success">Delete</th>
-                    <th class="text-success">Access Controls</th>
 
                 </tr>
             </thead>
@@ -213,7 +212,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <td>' . $row["status"] . '</td>
                             <td><button class="myEdit btn btn-success mt-1 pb-0 pt-0" id="' . $row["srno"] . '">Edit</button></td>
                             <td><button class="myDelete btn btn-success mt-1 pb-0 pt-0" id="' . $row["srno"] . '">Delete</button></td>
-                            <td><button class="myAccess btn btn-success mt-1 pb-0 pt-0">Access Controls</button></td>
                         </tr>';
                 }
                 ?>
