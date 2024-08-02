@@ -28,6 +28,7 @@ echo '
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item' . $functionsDisabled . '" href="/dms/admin/adminFun/viewAllUsers/viewAllUsers.php">View All Users</a></li>
                         <li><a class="dropdown-item' . $functionsDisabled . '" href="/dms/admin/adminFun/userManagement/userManagement.php">User Management</a></li>
+                        <li><a class="dropdown-item' . $functionsDisabled . '" href="/dms/admin/adminFun/userLogin/userLogin.php">User Dashboard Login</a></li>
                         <li><a class="dropdown-item' . $functionsDisabled . '" href="/dms/admin/adminFun/fileStorageStructure/myFile.php">File Structure</a></li>
                         <li><a class="dropdown-item' . $functionsDisabled . '" href="/dms/admin/adminFun/fileManagement/fileManagement.php">Document Details</a></li>
                         <li><hr class="dropdown-divider"></li>

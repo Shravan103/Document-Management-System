@@ -55,7 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("location: /DMS/user/user.php");
                 } elseif ($row['type'] == "officer") {
                     session_start();
+                    $_SESSION['alert_shown2'] = false;
                     $_SESSION['loggedin'] = true;
+                    $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $tempUsername;
                     header("location: /DMS/approver/approver.php");
                 } else {

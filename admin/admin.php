@@ -5,14 +5,25 @@
         header("location: /dms/index.php");
         exit();
     }
-
-
-// Prevent page caching
+//CACHING FOR ILLEGAL ACCESS
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 
+//DATABASE CONNECTION
+include '/xampp/htdocs/dms/partials/_dbconnect.php';
+
+//SET STATUS TOO ACTIVE
+if (isset($_SESSION['srno']))
+{
+    $srno = $_SESSION['srno'];
+
+    //TO MAKE STATUS ACTIVE
+    $stmt = $conn->prepare("UPDATE users SET status = 'active' WHERE srno = ?");
+    $stmt->bind_param("i", $srno);
+    $stmt->execute();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +53,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
     ?>
     <!-- STAICTICAL DATA -->
     <?php
-        include '/xampp/htdocs/dms/partials/_dbconnect.php';
+        
         //FOR TOATAL USERS
         $query1 = "select count(*) as totalU from `users`";
         $result1 = mysqli_query($conn, $query1);
