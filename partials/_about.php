@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         h1.top {
             text-align: center;
@@ -80,8 +79,7 @@
             margin-left: 40px;
         }
 
-        .two
-        {
+        .two {
             text-decoration: none;
             color: black;
         }
@@ -111,8 +109,7 @@
         <hr>
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
             <div class="col-10 col-sm-8 col-lg-6">
-                <img src="about1.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="800"
-                    height="800" loading="lazy">
+                <img src="about1.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="800" height="800" loading="lazy">
             </div>
             <div class="col-lg-6">
                 <h1 class="display-5.5 fw-bold lh-1 mb-3">What is <strong>DocStream</strong>?</h1>
@@ -165,16 +162,19 @@
         </div>
     </div>
 
-    <footer class="footer mt-auto py-3 bg-body-tertiary">
+    <!-- <footer class="footer mt-auto py-3 bg-body-tertiary">
         <div class="container text-center">
             <span class="text-muted">Copyright &copy; 2024 DocStream Team. All rights reserved.</span>
         </div>
-    </footer>
+    </footer> -->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+            <?php
+            include '/xampp/htdocs/dms/partials/aboutFooter.php';
+            ?>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
