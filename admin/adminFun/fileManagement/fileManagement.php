@@ -28,10 +28,10 @@ include '/xampp/htdocs/dms/partials/_dbconnect.php';
 <body>
     <!--NAVBAR-->
     <?php include '/xampp/htdocs/dms/admin/adminExtra/_Aheader.php'; ?>
-							 
+                             
     <!-- DATATABLE -->
     <div class="card-body container mt-5 mb-2 pt-2 pb-2 pl-5 pr-5">
-        <h2 class="text-center text-secondary">File Management</h2>
+        <h2 class="text-center text-secondary">--File Management--</h2>
         <table id="myTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -42,15 +42,31 @@ include '/xampp/htdocs/dms/partials/_dbconnect.php';
                     <th class="text-primary">File Type</th>
                     <th class="text-primary">Upload Date</th>
                     <th class="text-primary">Uploaded By</th>
-                    
+                    <th class="text-primary">Current Access</th>
                     <th class="text-success">Access Control</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * FROM `documents`";
+                $sql = "SELECT d.*, 
+                               GROUP_CONCAT(ac.user_id SEPARATOR ',') AS access_user_ids
+                        FROM `documents` d
+                        LEFT JOIN `access_control` ac ON d.document_id = ac.document_id
+                        GROUP BY d.document_id";
                 $result = mysqli_query($conn, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
+                    $accessDropdown = '';
+                    if ($row['access_user_ids']) {
+                        $accessUserIds = explode(',', $row['access_user_ids']);
+                        $accessDropdown = '<select class="form-select">';
+                        foreach ($accessUserIds as $userId) {
+                            $accessDropdown .= '<option>' . $userId . '</option>';
+                        }
+                        $accessDropdown .= '</select>';
+                    } else {
+                        $accessDropdown = 'No Access';
+                    }
+
                     echo '<tr>
                             <td>' . $row["document_id"] . '</td>
                             <td>' . $row["title"] . '</td>
@@ -59,7 +75,7 @@ include '/xampp/htdocs/dms/partials/_dbconnect.php';
                             <td>' . $row["file_type"] . '</td>
                             <td>' . $row["upload_date"] . '</td>
                             <td>' . $row["uploaded_by"] . '</td>
-                            
+                            <td>' . $accessDropdown . '</td>
                             <td><a href="accessControl.php?document_id=' . $row["document_id"] . '" class="btn btn-success mt-1 pb-0 pt-0">Access Control</a></td>
                         </tr>';
                 }
@@ -85,3 +101,4 @@ include '/xampp/htdocs/dms/partials/_dbconnect.php';
 </body>
 
 </html>
+

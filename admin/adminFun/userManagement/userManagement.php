@@ -74,6 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.0/css/dataTables.dataTables.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
+        /* CSS for footer to stick at bottom */
+        html,body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 
@@ -220,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <!-- ADD USER MODAL BUTTON -->
-    <div class="container px-0 pb-5">
+    <div class="container px-0">
         <p class="text-success" style="display: inline-block;">Want to add users?</p><button type="button" class="btn btn-success m-2 px-5" data-bs-toggle="modal" data-bs-target="#exampleModal">Add User</button>
     </div>
 
@@ -268,9 +278,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         })
     </script>
 
-    <?php
-    require '/xampp/htdocs/dms/partials/_footer.php';
-    ?>
+    <!-- IMPORTED FOOTER -->
+    <div style="margin-top: auto;">
+        <?php require '/xampp/htdocs/dms/partials/_footer.php'; ?>
+    </div>
 </body>
 
 </html>
