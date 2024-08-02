@@ -1,6 +1,24 @@
 <?php
 //DATABASE CONNECTION
 include '/xampp/htdocs/dms/partials/_dbconnect.php';
+
+// Function to log in as a particular user
+if (isset($_POST['loginAsUser'])) {
+    $srno = $_POST['srno'];
+    $sql = "SELECT * FROM `users` WHERE `srno` = '$srno'";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        session_start();
+        $_SESSION['alert_shown2'] = false;
+        $_SESSION['username'] = "ADMIN";
+        $_SESSION['srno'] = $row['srno'];
+        $_SESSION['type'] = $row['type'];
+        // Redirect to user dashboard
+        header("Location: /dms/user/user.php");
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +71,7 @@ include '/xampp/htdocs/dms/partials/_dbconnect.php';
             <tbody>
                 <?php
                 $mySr = 0;
-                $sql = "select * from `users` where `type` = 'officer' or `type` = 'employee'";
+                $sql = "select * from `users` where `type` = 'employee'";
                 $result = mysqli_query($conn, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
                     $mySr++;
@@ -64,7 +82,12 @@ include '/xampp/htdocs/dms/partials/_dbconnect.php';
                             <td>' . $row["type"] . '</td>
                             <td>' . $row["date"] . '</td>
                             <td>' . $row["status"] . '</td>
-                            <td><button class="myEdit btn btn-success mt-1 pb-0 pt-0" id="' . $row["srno"] . '">Login</button></td>
+                            <td>
+                                <form method="post" style="display:inline;">
+                                    <input type="hidden" name="srno" value="' . $row["srno"] . '">
+                                    <button type="submit" name="loginAsUser" class="btn btn-success mt-1 pb-0 pt-0">Login</button>
+                                </form>
+                            </td>
                         </tr>';
                 }
                 ?>

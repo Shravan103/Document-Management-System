@@ -42,7 +42,7 @@
 
         <script>
           // Initialize a map
-          var map = L.map('map').setView([15.4012550616, 73.8215633804], 13);
+          var map = L.map('map').setView([15.402654, 73.824143], 13);
 
           // Add a tile layer (e.g., OpenStreetMap)
           L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -50,7 +50,7 @@
           }).addTo(map);
 
           // Add a marker to the map
-          L.marker([15.4012550616, 73.8215633804]).addTo(map)
+          L.marker([15.402654, 73.824143]).addTo(map)
             .bindPopup("Find us at Goa Shipyard Limited, Vasco Da Gama.");
         </script>
       </div>

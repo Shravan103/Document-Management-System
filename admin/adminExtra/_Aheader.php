@@ -47,11 +47,3 @@ echo '
 </nav>
 ';
 ?>
-
-<style>
-    .nav-link.disabled,
-    .dropdown-item.disabled {
-        pointer-events: none;
-        color: #6c757d; /* Bootstrap's default disabled text color */
-    }
-</style>

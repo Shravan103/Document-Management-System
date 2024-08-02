@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['email'] = $row['email'];
                     $_SESSION['date'] = $row['date'];
-                    $_SESSION['status'] = $row['status'];
+                    $_SESSION['status'] = "active";
                     header("location: /DMS/admin/admin.php");
                 } elseif ($row['type'] == "employee") {
                     session_start();
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("location: /DMS/user/user.php");
                 } elseif ($row['type'] == "officer") {
                     session_start();
-                    $_SESSION['alert_shown2'] = false;
+                    $_SESSION['alert_shown3'] = false;
                     $_SESSION['loggedin'] = true;
                     $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $tempUsername;

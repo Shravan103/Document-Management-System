@@ -113,22 +113,6 @@ html {
 	color: var(--dark);	
 }
 
-
-@media screen and (max-width: 768px) {
-	#content {
-		width: calc(100% - 60px);
-		left: 200px;
-	}
-
-}
-
-@media screen and (max-width: 576px) {
-	
-	#content main .box-info {
-		grid-template-columns: 1fr;
-	}
-}
-
 /* Calendar */
 :root {
     --dark-body: #4d4c5a;
@@ -428,4 +412,54 @@ html {
     width: 40%;
     margin: 0;
     padding: 0;
+}
+
+/* FOR STATISTICS */
+@media screen and (max-width: 768px) {
+	#content {
+		width: calc(100% - 60px);
+		left: 200px;
+	}
+
+}
+
+@media screen and (max-width: 576px) {
+	
+	#content main .box-info {
+		grid-template-columns: 1fr;
+	}
+}
+
+
+
+/* FOR TODO AND CALENDAR */
+.resp1, .resp2 {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+    .both.container {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .resp1 {
+        width: 60%;
+    }
+    
+    .resp2 {
+        width: 35%;
+    }
+}
+
+@media (max-width: 767px) {
+    .both.container {
+        flex-direction: column;
+    }
+    
+    .resp1, .resp2 {
+        width: 100%;
+    }
 }

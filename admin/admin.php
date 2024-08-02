@@ -116,7 +116,7 @@ if (isset($_SESSION['srno']))
 
         <!-- TODO List -->
         
-        <div class="container item itemSc shadow">
+        <div class="container item itemSc shadow resp1">
         <h3 class="text-center text-secondary mb-0 mt-3 pb-0 pt-2 container non-flex">TODO LIST</h2>
             <?php
             include '/xampp/htdocs/dms/admin/adminFun/todoList/todo.php';
@@ -126,7 +126,7 @@ if (isset($_SESSION['srno']))
 
         <!-- CALENDAR -->
 
-        <div class="mt-5 mb-0 item itemCal">
+        <div class="mt-5 mb-0 item itemCal resp2">
             
                 <div class="light">
                     <div class="calendar">
