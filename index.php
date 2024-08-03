@@ -52,6 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['loggedin'] = true;
                     $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $tempUsername;
+                    $_SESSION['status'] = "active";
                     header("location: /DMS/user/user.php");
                 } elseif ($row['type'] == "officer") {
                     session_start();
@@ -59,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['loggedin'] = true;
                     $_SESSION['srno'] = $row['srno'];
                     $_SESSION['username'] = $tempUsername;
+                    $_SESSION['status'] = "active";
                     header("location: /DMS/approver/approver.php");
                 } else {
                     $lshowAlert = true;

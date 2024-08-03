@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2024 at 08:38 PM
+-- Generation Time: Aug 03, 2024 at 06:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,9 @@ INSERT INTO `access_control` (`access_id`, `user_id`, `document_id`, `access_typ
 (19, 23, 25, 'View and Download', 1, '2024-08-02 06:47:21'),
 (20, 3, 25, 'View Only', 1, '2024-08-02 06:47:42'),
 (21, 23, 26, 'View Only', 1, '2024-08-02 06:49:44'),
-(22, 12, 25, 'View Only', 1, '2024-08-02 07:23:32');
+(22, 12, 25, 'View Only', 1, '2024-08-02 07:23:32'),
+(23, 24, 27, 'View Only', 1, '2024-08-03 16:15:36'),
+(24, 24, 28, 'View and Download', 1, '2024-08-03 16:15:51');
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,9 @@ CREATE TABLE `documents` (
 INSERT INTO `documents` (`document_id`, `title`, `description`, `file_path`, `file_type`, `upload_date`, `uploaded_by`, `status`) VALUES
 (24, 'TWPE', 'TWPE Excercise', '/xampp/htdocs/dms/filesTemp/TWPE Excercise.pdf', 'pdf', '2024-08-01 16:18:07', 1, 'Active'),
 (25, 'Taigman', 'Deep face learning research paper', '/xampp/htdocs/dms/filesTemp/taigman_cvpr14.pdf', 'pdf', '2024-08-01 16:19:20', 1, 'Active'),
-(26, 'IP Paper', 'Third Year IP Papers 2019 Batch', '/xampp/htdocs/dms/filesTemp/user2/TE1257.pdf', 'pdf', '2024-08-02 03:19:26', 1, 'Active');
+(26, 'IP Paper', 'Third Year IP Papers 2019 Batch', '/xampp/htdocs/dms/filesTemp/user2/TE1257.pdf', 'pdf', '2024-08-02 03:19:26', 1, 'Active'),
+(27, 'Civil Papers', 'asdasdad', '/xampp/htdocs/dms/filesTemp/user3/Civil Paper.pdf', 'pdf', '2024-08-03 12:44:17', 1, 'Active'),
+(28, 'Air pollution', 'sfdsssssscd', '/xampp/htdocs/dms/filesTemp/user3/Air Pollution- U4 (OE).pdf', 'pdf', '2024-08-03 12:45:13', 1, 'Active');
 
 -- --------------------------------------------------------
 
@@ -108,7 +112,9 @@ CREATE TABLE `document_approvals` (
 INSERT INTO `document_approvals` (`approval_id`, `document_id`, `approved_by`, `approval_date`, `status`) VALUES
 (20, 24, NULL, '2024-08-01 16:18:07', 'Pending'),
 (21, 25, NULL, '2024-08-01 16:19:20', 'Pending'),
-(22, 26, NULL, '2024-08-02 03:19:26', 'Pending');
+(22, 26, NULL, '2024-08-02 03:19:26', 'Pending'),
+(23, 27, NULL, '2024-08-03 12:44:17', 'Pending'),
+(24, 28, NULL, '2024-08-03 12:45:13', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -136,6 +142,13 @@ CREATE TABLE `starred_documents` (
   `document_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `starred_documents`
+--
+
+INSERT INTO `starred_documents` (`user_id`, `document_id`) VALUES
+(24, 27);
+
 -- --------------------------------------------------------
 
 --
@@ -159,7 +172,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`srno`, `username`, `email`, `type`, `password`, `date`, `status`) VALUES
 (1, 'ru', 'ru@gmail.com', 'admin', '$2y$10$yl4eBezgxixhcshhG3oA2uEe7j00wrVjW.2qMXewEmuHIfgMAfP2K', '2024-07-14 16:07:02', 'inactive'),
 (2, 'sh', 'sh@gmail.com', 'officer', '$2y$10$SdMfzlXfuuZKHmhI2cGJ/O1cRN.JNBt1CUeXqOoW9FMaMvGHKOcgC', '2024-07-14 16:55:04', 'active'),
-(3, 'smita', 'smita@gmail.com', 'employee', '$2y$10$b/yE5qJm73O20VFonW6PXONfpcHurqq4wb.7sUTF3py4Elw6KQaFG', '2024-07-14 16:55:22', 'active'),
+(3, 'smita', 'smita@gmail.com', 'employee', '$2y$10$b/yE5qJm73O20VFonW6PXONfpcHurqq4wb.7sUTF3py4Elw6KQaFG', '2024-07-14 16:55:22', 'inactive'),
 (4, 'sanjay', 'sanjay@gmail.com', 'employee', '$2y$10$EoaKqsl.OBQuJrXyvs/AnO/oGxGzztBknWItMy7otwOcg0SSNa7IO', '2024-07-14 16:55:49', 'active'),
 (11, 'shr', 'shr@gmail.com', 'employee', '$2y$10$BIz66j2n9J5P/TPg9jOFFugQ2JHgyryvk6qvhj/SzEk/jj2jmEBLe', '2024-07-19 20:57:05', 'active'),
 (12, 'anon', 'anonymous295308@gmail.com', 'employee', '$2y$10$XP/ww37BYazmPrz6CVaTPe6XbzULQxsuk2BebKJwX8.7HfhSnv4LS', '2024-07-23 21:44:48', 'active'),
@@ -169,7 +182,8 @@ INSERT INTO `users` (`srno`, `username`, `email`, `type`, `password`, `date`, `s
 (20, 'testuser', 'testuser@gmail.com', 'admin', '$2y$10$wbBTPZevakW8jS321d83f.FCOdLzZunqrcRPV8tIY.f4a9YsKlWjW', '2024-07-24 18:30:47', 'active'),
 (21, 'k', 'k@gmail.com', 'employee', '$2y$10$LbO22aKp.PPiPfLu4ldapelaqiZy7PnZ.e6V1SY6rd5lJgtXvKATC', '2024-07-30 17:18:48', 'active'),
 (22, 'd', 'd@gmail.com', 'employee', '$2y$10$BhvcC3czKeyEhXXdX4FuJ.3kLGFjqMpQdzZUAU7zZpl1CcLd4sjCm', '2024-08-01 12:31:46', 'active'),
-(23, 'bhai', 'bhai@gmail.com', 'employee', '$2y$10$hTDt/R/oZfygl4.mUAuLZuce1yowHDfcvEFKeB84WqhUwYxXOCNKy', '2024-08-01 22:41:30', 'active');
+(23, 'bhai', 'bhai@gmail.com', 'employee', '$2y$10$hTDt/R/oZfygl4.mUAuLZuce1yowHDfcvEFKeB84WqhUwYxXOCNKy', '2024-08-01 22:41:30', 'active'),
+(24, 'raj', 'raj@gmail.com', 'employee', '$2y$10$GX.Q3ZssSvTf7JQMX/MureCCRFp/MJRoiSnPS.WjGKB.XEpdfV0Dm', '2024-08-03 21:41:11', 'inactive');
 
 --
 -- Indexes for dumped tables
@@ -235,7 +249,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `access_control`
 --
 ALTER TABLE `access_control`
-  MODIFY `access_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `access_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `audit_logs`
@@ -247,13 +261,13 @@ ALTER TABLE `audit_logs`
 -- AUTO_INCREMENT for table `documents`
 --
 ALTER TABLE `documents`
-  MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `document_approvals`
 --
 ALTER TABLE `document_approvals`
-  MODIFY `approval_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `approval_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `document_versions`
@@ -265,7 +279,7 @@ ALTER TABLE `document_versions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `srno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `srno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables

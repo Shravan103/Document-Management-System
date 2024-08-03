@@ -79,6 +79,8 @@
   <!--IMPORTED FILE STRUCTURE -->
   <h2 class="card-body container mt-5 mb-2 pt-2 pb-2 pl-5 pr-5 text-center text-secondary">--File Structure--</h2>
   <input class="greyLine form-control text-center w-50" type="text" placeholder="Below is the overall Folder-File structure present on this local machine." aria-label="Disabled input example" disabled>
+  
+  <!-- JSTREE FILE -->
   <div class="card-body container mt-4 mb-2 pt-2 pb-2 pl-5 pr-5">
     <div id="file-tree" class="fileStyle"></div>
   </div>
