@@ -5,8 +5,9 @@ echo '<nav class="navbar bg-body-tertiary fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand myHeader" href="'. $navbarHref .'">' . $navbarTitle . '</a>
             <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <a class="navbar-brand" draggable="true" style="font-size: 27px; color: navy;">
+                <span style="color: rgb(13, 5, 54); font-weight: bold;">Doc</span>Stream
+                </a>
             </form>
         </div>
     </nav>';

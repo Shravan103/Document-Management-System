@@ -1,7 +1,10 @@
 <?php
+session_start();
 require "/xampp/htdocs/dms/partials/_dbconnect.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $remarks = $_POST['approvalRemarks'];
+    $approved_by = $_SESSION['srno'];
     $document_id = isset($_POST['document_id']) ? $_POST['document_id'] : '';
 
     if ($document_id) {
@@ -9,13 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $checkResult = mysqli_query($conn, $checkSql);
 
         if (mysqli_num_rows($checkResult) > 0) {
-            $insertSql = "insert into document_approvals (document_id, approval_date, status) VALUES ('$document_id', NOW(), 'Approved')";
+            $updateSql = "update document_approvals set status = 'Approved' , approved_by = $approved_by where document_id = $document_id";
+            $result = mysqli_query($conn, $updateSql);
 
-            $result = mysqli_query($conn, $insertSql);
-            $updateSql = "update documents set status = 'Approved' where document_id = $document_id";
-            $result2 = mysqli_query($conn, $updateSql);
+            $auditSql = "insert into audit_logs (user_id, action, details) values ('$approved_by', 'Approved', '$remarks')";
+            $auditResult = mysqli_query($conn, $auditSql);
 
-            if ($result and $result2) {
+            if ($result and $auditResult) {
                 echo json_encode(['success' => true]);
                 header("location: approver.php");
                 exit();

@@ -29,7 +29,7 @@ if (isset($_SESSION['srno'])) {
     <title>User Section</title>
 </head>
 
-<body style="padding-top: 55px;">
+<body style="padding-top: 67px;">
     <?php
     $servername = "127.0.0.1";
     $username = "root";

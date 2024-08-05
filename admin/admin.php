@@ -14,11 +14,10 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 //DATABASE CONNECTION
 include '/xampp/htdocs/dms/partials/_dbconnect.php';
 
-//SET STATUS TOO ACTIVE
+//SET STATUS TO ACTIVE
 if (isset($_SESSION['srno']))
 {
     $srno = $_SESSION['srno'];
-
     //TO MAKE STATUS ACTIVE
     $stmt = $conn->prepare("UPDATE users SET status = 'active' WHERE srno = ?");
     $stmt->bind_param("i", $srno);

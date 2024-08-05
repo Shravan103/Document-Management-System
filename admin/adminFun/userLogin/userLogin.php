@@ -10,13 +10,24 @@ if (isset($_POST['loginAsUser'])) {
     if ($result) {
         $row = mysqli_fetch_assoc($result);
         session_start();
-        $_SESSION['alert_shown2'] = false;
+        
         $_SESSION['username'] = "ADMIN";
         $_SESSION['srno'] = $row['srno'];
         $_SESSION['type'] = $row['type'];
         // Redirect to user dashboard
-        header("Location: /dms/user/user.php");
-        exit();
+        if($row['type']=="employee")
+        {
+            $_SESSION['alert_shown2'] = false;
+            header("Location: /dms/user/user.php");
+            exit();
+        }
+        else
+        {
+            $_SESSION['alert_shown3'] = false;
+            header("Location: /dms/approver/approver.php");
+            exit();
+        }
+        
     }
 }
 ?>
@@ -71,7 +82,7 @@ if (isset($_POST['loginAsUser'])) {
             <tbody>
                 <?php
                 $mySr = 0;
-                $sql = "select * from `users` where `type` = 'employee'";
+                $sql = "select * from `users` where `type` = 'employee' or `type` = 'officer'";
                 $result = mysqli_query($conn, $sql);
                 while ($row = mysqli_fetch_assoc($result)) {
                     $mySr++;

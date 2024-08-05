@@ -1,7 +1,21 @@
 <?php
+session_start();
+$srno = $_SESSION['srno'];
 require "/xampp/htdocs/dms/partials/_dbconnect.php";
+if (!isset($_SESSION['loggedin']) || ($_SESSION['loggedin'])!=true){
+    header("location: ../index.php");
+}
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//SET STATUS TO ACTIVE
+if (isset($_SESSION['srno']))
+{
+    //TO MAKE STATUS ACTIVE
+    $stmt = $conn->prepare("UPDATE users SET status = 'active' WHERE srno = ?");
+    $stmt->bind_param("i", $srno);
+    $stmt->execute();
+}
+
+elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data
     $title = $_POST['documentTitle'];
     $description = $_POST['documentDescription'];
@@ -17,12 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $uploadFile = $uploadDir . basename($fileName);
 
         if (move_uploaded_file($fileTmpName, $uploadFile)) {
-            $sql = "INSERT INTO documents (title, description, file_type, file_path) VALUES ('$title', '$description', '$fileType', '$uploadFile')";
+            $sql = "INSERT INTO documents (title, description, file_type, file_path, uploaded_by) VALUES ('$title', '$description', '$fileType', '$uploadFile', '$srno')";
             $result = mysqli_query($conn, $sql);
 
             if (!$result) {
                 echo "Error: " . mysqli_error($conn);
             } else {
+                $document_id = mysqli_insert_id($conn);
+                $sql = "insert into document_approvals (document_id) values ($document_id)";
+                $result = mysqli_query($conn, $sql);
                 echo '
                     <div class="modal fade" id="uploadSuccessModal" tabindex="-1" aria-labelledby="uploadSuccessModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -83,21 +100,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </head>
 
-    
+    <!-- NAVBAR -->
     <?php
         $navbarTitle = "Approver Dashboard";
         $navbarHref = './approver.php';
         require 'C:/xampp/htdocs/dms/partials/_header.php';
-        // Success login alert here 
-        // echo '<div class="alert alert-success alert-dismissible fade show alert-top mb-0" role="alert"><strong>Success! </strong>You are successfully Logged-In.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        if (!$_SESSION['alert_shown3']) {
+            echo '<div class="alert alert-success alert-dismissible fade show alert-top mb-0" role="alert"><strong>Success! </strong>
+                Hey ' . $_SESSION['username'] . ', you are successfully Logged-In.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $_SESSION['alert_shown3'] = true;
+        }
     ?>
 
+    <!-- SIDEBAR -->
     <div class="sidebar">
         <a class="active" id="addFiles" href="#addFiles">Add Files</a>
         <a id="pendingApproval" href="#pendingApproval">Pending Approvals</a>
         <a id="approvedFiles" href="#approvedFiles">Approved Files</a>
         <a id="rejectedFiles" href="#rejectedFiles">Rejected Files</a>
-        <a id="logout" href="../index.php">Log Out</a>
+        <a id="logout" href="../logout.php">Log Out</a>
     </div>
 
     <div id="addFilesSection">
@@ -127,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <textarea class="form-control" id="documentDescription" name="documentDescription" rows="3" required></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <input class="form-control" type="file" id="formFile" name="formFile" required>
+                                        <input class="form-control" type="file" id="formFile" name="formFile" required accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx,.pdf,.rar,.zip,.iso,.jpeg,.jpg,.png,.mp3,.mp4,.mov,.flv,.avi,.mkv,.bmp,.gif,.ogg,.wav">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -147,6 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <th scope="col">Description</th>
                         <th scope="col">File Type</th>
                         <th class="sorting" scope="col">Upload Date</th>
+                        <th scope="col">Upload Time</th>
                         <th scope="col">Download File</th>
                         <th scope="col">Status</th>
                     </tr>
@@ -158,11 +180,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $date = new DateTime($row['upload_date']);
+                                $dateFormatted = $date->format('Y-m-d');
+                                $timeFormatted = $date->format('h:i A');
                                 echo "<tr>
                                         <td>" . htmlspecialchars($row['title']) . "</td>
                                         <td>" . htmlspecialchars($row['description']) . "</td>
                                         <td>" . htmlspecialchars($row['file_type']) . "</td>
-                                        <td>" . htmlspecialchars($row['upload_date']) . "</td>
+                                        <td>" . htmlspecialchars($dateFormatted) . "</td>
+                                        <td>" . htmlspecialchars($timeFormatted) . "</td>
                                         <td><a href='download.php?file=" . urlencode($row['file_path']) . "' class='btn btn-secondary btn-sm' download>Download</a></td>
                                         <td>" . htmlspecialchars($row['status']) . "</td>
                                     </tr>";
@@ -185,26 +211,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <thead>
                     <tr>
                         <th scope="col">File Name</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Date Created</th>
+                        <th scope="col">File Author</th>
+                        <th class="sorting" scope="col">Date Created</th>
                         <th scope="col">Time Created</th>
+                        <th scope="col">File Type</th>
                         <th scope="col">Download</th>
                         <th scope="col">Approve?</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     <?php
-                        $sql = "SELECT document_id, title, description, file_type, file_path, upload_date, status FROM documents where status = 'Not Approved'";
+                        $sql = "SELECT 
+                                    d.document_id, 
+                                    d.title, 
+                                    d.description, 
+                                    d.file_path, 
+                                    d.file_type, 
+                                    d.upload_date, 
+                                    d.uploaded_by, 
+                                    d.status,
+                                    u.username
+                                FROM 
+                                    document_approvals da
+                                JOIN 
+                                    documents d ON da.document_id = d.document_id
+                                JOIN 
+                                    users u ON d.uploaded_by = u.srno
+                                WHERE 
+                                    da.status = 'Pending';
+                                ";
                         $result = mysqli_query($conn, $sql);
 
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $date = new DateTime($row['upload_date']);
+                                $dateFormatted = $date->format('Y-m-d');
+                                $timeFormatted = $date->format('h:i A');
                                 echo "<tr>
                                         <td id='data-document-id' hidden>" . htmlspecialchars($row['document_id']) . "</td>
                                         <td>" . htmlspecialchars($row['title']) . "</td>
+                                        <td>" . htmlspecialchars($row['username']) . "</td>
+                                        <td>" . htmlspecialchars($dateFormatted) . "</td>
+                                        <td>" . htmlspecialchars($timeFormatted) . "</td>
                                         <td>" . htmlspecialchars($row['file_type']) . "</td>
-                                        <td>" . htmlspecialchars(substr($row['upload_date'], 0, 10)) . "</td>
-                                        <td>" . htmlspecialchars(substr($row['upload_date'], 10)) . "</td>
                                         <td><a href='download.php?file=" . urlencode($row['file_path']) . "' class='btn btn-secondary btn-sm' download>Download</a></td>
                                         <td>
                                             <form action='approve_document.php' method='post'>
@@ -222,8 +271,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             <div class='modal-body'>
                                                                 <p><b>Are you sure you want to approve this document?</b></p>
                                                                 <div class='mb-3'>
-                                                                    <label for='exampleFormControlInput1' class='form-label'>Remarks</label>
-                                                                    <input type='text' class='form-control' id='exampleFormControlInput1' placeholder='Enter remarks here...'>
+                                                                    <label for='approvalRemarks' class='form-label'>Remarks</label>
+                                                                    <input type='text' class='form-control' id='approvalRemarks' name='approvalRemarks' placeholder='Enter remarks here...'>
                                                                 </div>
                                                             </div>
                                                             <div class='modal-footer'>
@@ -236,7 +285,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             </form>
                                         </td>
                                         <td>   
-                                            <form action='refuse_document.php' method='post'>
+                                            <form action='reject_document.php' method='post'>
                                                 <input type='hidden' name='document_id' id='document_id_refuse'>
                                                 <button type='button' class='btn btn-outline-dark' data-bs-toggle='modal' data-bs-target='#refuseConfirmModal'>
                                                     ✖️
@@ -250,7 +299,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             </div>
                                                             <div class='modal-body'>
                                                                 <p>Are you sure you want to reject this document?</p>
+                                                                <div class='mb-3'>
+                                                                    <label for='rejectionRemarks' class='form-label'>Remarks</label>
+                                                                    <input type='text' class='form-control' id='rejectionRemarks' name='rejectionRemarks' placeholder='Enter remarks here...' autocomplete='off'>
+                                                                </div>
                                                             </div>
+                                                            
                                                             <div class='modal-footer'>
                                                                 <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>
                                                                 <button type='submit' class='btn btn-primary' id='refuseApprovalButton'>Reject</button>
@@ -279,24 +333,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <tr>
                         <th scope="col">File Name</th>
                         <th scope="col">Date Created</th>
+                        <th scope="col">Time Created</th>
                         <th scope="col">File Type</th>
                         <th scope="col">Download File</th>
-                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     <?php
-                        $sql = "select title, file_type, file_path, upload_date, status from documents where status = 'Approved'";
+                        $sql = "SELECT 
+                                    d.document_id, 
+                                    d.title, 
+                                    d.description, 
+                                    d.file_path, 
+                                    d.file_type, 
+                                    d.upload_date, 
+                                    d.uploaded_by, 
+                                    d.status
+                                FROM 
+                                    document_approvals da
+                                JOIN 
+                                    documents d ON da.document_id = d.document_id
+                                WHERE 
+                                    da.status = 'Approved';
+                                ";
                         $result = mysqli_query($conn, $sql);
 
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $date = new DateTime($row['upload_date']);
+                                $dateFormatted = $date->format('Y-m-d');
+                                $timeFormatted = $date->format('h:i A');
                                 echo "<tr>
                                         <td>" . htmlspecialchars($row['title']) . "</td>
-                                        <td>" . htmlspecialchars($row['upload_date']) . "</td>
+                                        <td>" . htmlspecialchars($dateFormatted) . "</td>
+                                        <td>" . htmlspecialchars($timeFormatted) . "</td>
                                         <td>" . htmlspecialchars($row['file_type']) . "</td>
                                         <td><a href='download.php?file=" . urlencode($row['file_path']) . "' class='btn btn-secondary btn-sm' download>Download</a></td>
-                                        <td>" . htmlspecialchars($row['status']) . "</td>
                                     </tr>";
                             }
                         } else {
@@ -318,27 +390,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <th scope="col">File Name</th>
                         <th scope="col">Description</th>
                         <th scope="col">Date Created</th>
+                        <th scope="col">Time Created</th>
                         <th scope="col">File Type</th>
                         <th scope="col">Download</th>
-                        <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     <?php
-                        $sql = "SELECT title, description, file_type, file_path, upload_date, status FROM documents where status = 'Rejected'";
+                        $sql = "SELECT 
+                                    d.document_id, 
+                                    d.title, 
+                                    d.description, 
+                                    d.file_path, 
+                                    d.file_type, 
+                                    d.upload_date, 
+                                    d.uploaded_by, 
+                                    d.status
+                                FROM 
+                                    document_approvals da
+                                JOIN 
+                                    documents d ON da.document_id = d.document_id
+                                WHERE 
+                                    da.status = 'Rejected';
+                                ";
                         $result = mysqli_query($conn, $sql);
 
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
+                                $date = new DateTime($row['upload_date']);
+                                $dateFormatted = $date->format('Y-m-d');
+                                $timeFormatted = $date->format('h:i A');
                                 $serialNumber = 1;
                                 echo "<tr>
                                         <td>" . $serialNumber++ . "</td>
                                         <td>" . htmlspecialchars($row['title']) . "</td>
                                         <td>" . htmlspecialchars($row['description']) . "</td>
-                                        <td>" . htmlspecialchars($row['upload_date']) . "</td>
+                                        <td>" . htmlspecialchars($dateFormatted) . "</td>
+                                        <td>" . htmlspecialchars($timeFormatted) . "</td>
                                         <td>" . htmlspecialchars($row['file_type']) . "</td>
                                         <td><a href='download.php?file=" . urlencode($row['file_path']) . "' class='btn btn-secondary btn-sm' download>Download</a></td>
-                                        <td>" . htmlspecialchars($row['status']) . "</td>
                                     </tr>";
                             }
                         } else {
@@ -369,7 +459,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
         $(document).ready(function() {
             $('#approvedTable').DataTable({
-                "order": [[1, "desc"]]
+                "order": [[2, "desc"]]
             });
         });
         $(document).ready(function() {
