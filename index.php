@@ -4,32 +4,36 @@ $rshowAlert = false;
 $lshowAlert = false;
 include 'partials/_dbconnect.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //Registration Process
-    if (isset($_POST["rusername"]) && isset($_POST["remail"]) && isset($_POST["rpassword"])) {
-        $rusername = $_POST["rusername"];
-        $remail = $_POST["remail"];
-        $rpassword = $_POST["rpassword"];
+if(isset($_POST['submit'])){
 
-        $query = "select * from `users` where username = '$rusername' and email = '$remail'";
-        $result = mysqli_query($conn, $query);
-        $numExistRows = mysqli_num_rows($result);
-        if ($numExistRows >= 1) {
-            $rshowError = true;
-        } else {
-            $hash = password_hash($rpassword, PASSWORD_DEFAULT);
-            $reg = "INSERT INTO `users` (`username`, `email`, `type`, `password`, `date`) VALUES ('$rusername', '$remail', 'employee', '$hash', current_timestamp())";
-            $result = mysqli_query($conn, $reg);
-            if ($result) {
-                $rshowAlert = true;
-            }
-        }
+    $filter_name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+    $name = mysqli_real_escape_string($conn, $filter_name);
+    $filter_email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+    $email = mysqli_real_escape_string($conn, $filter_email);
+    $filter_pass = filter_var($_POST['pass'], FILTER_SANITIZE_STRING);
+    $pass = mysqli_real_escape_string($conn, md5($filter_pass));
+    //$filter_cpass = filter_var($_POST['cpass'], FILTER_SANITIZE_STRING);
+   // $cpass = mysqli_real_escape_string($conn, md5($filter_cpass));
+ 
+    $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE email = '$email'") or die('query failed');
+ 
+    if(mysqli_num_rows($select_users) > 0){
+       $message[] = 'user already exist!';
+    }//else{
+       //if($pass != $cpass){
+         // $message[] = 'confirm password not matched!';
+       else{
+          mysqli_query($conn, "INSERT INTO `users`(name, email, password) VALUES('$name', '$email', '$pass')") or die('query failed');
+          $message[] = 'registered successfully!';
+          header('location:index.php');
+       }
     }
     //Login Process
     elseif (isset($_POST["lpassword"]) && isset($_POST["lemail"])) {
         $lemail =  $_POST["lemail"];
         $lpassword = $_POST["lpassword"];
 
-        $query = "select * from `users` where email = '$lemail'";
+        $query = "select * from `users` where email = '$lemail' and status2 = '1'";
         $result = mysqli_query($conn, $query);
         $numExistRows = mysqli_num_rows($result);
         if ($numExistRows == 1) {
@@ -142,15 +146,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Registration form -->
         <div class="form-box register">
             <h2>Registration</h2>
-            <form action="/DMS/index.php" method="POST">
+            <form action="otp/register_check.php" method="POST">
                 <div class="input-box">
-                    <input type="text" placeholder="Username" name="rusername" required>
+                    <input type="text" placeholder="Username" name="name" required>
                 </div>
                 <div class="input-box">
-                    <input type="email" placeholder="Email" name="remail" required>
+                    <input type="email" placeholder="Email" name="email" required>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Password" name="rpassword" required>
+                    <input type="password" placeholder="Password" name="pass" required>
                 </div>
                 <button type="submit" class="btn">Register</button>
                 <div class="login-register">

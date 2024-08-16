@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $aAccountExists = true;
         } else {
             $hash = password_hash($aPassword, PASSWORD_DEFAULT);
-            $reg = "INSERT INTO `users` (`username`, `email`, `type`, `password`, `date`) VALUES ('$aUsername', '$aEmail', '$aType', '$hash', current_timestamp())";
+            $reg = "INSERT INTO `users` (`username`, `email`, `type`, `password`, `date`, `status2`) VALUES ('$aUsername', '$aEmail', '$aType', '$hash', current_timestamp(), 1)";
             $result = mysqli_query($conn, $reg);
             if ($result) {
                 $aAccountCreated = true;

@@ -15,7 +15,7 @@ function resetPasswordOnly()
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'docstreamofficial@gmail.com';
-        $mail->Password   = 'npxbunksujpluvkt';
+        $mail->Password   = 'mjuf mldq ynsy gvgt';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
