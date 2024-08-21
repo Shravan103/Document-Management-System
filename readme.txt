@@ -7,6 +7,7 @@ About DMS project:
 - Admin user (Developed by Shravan & Tirtha)
 - Officer user (Developed by Adarsh & Saloni)
 - Employee user (Developed by Santosh & Shobha)
+- Authentication module (Developed by Shravan & Tirtha) 
 
 How to run?
 - move/copy the "dms" directory in htdocs(pref: XAMPP) directory such that "htdocs/dms" path is true.
